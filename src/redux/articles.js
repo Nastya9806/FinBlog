@@ -1,19 +1,27 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const articlesSlice = createSlice({
     name: 'article',
     initialState: {
         articles: [],
-        // article: {},
+        article: {},
         articlesCount: 0,
-        page: 1,
+        currPage: 1,
         limit: 5,
+        loading: true,
     },
 
     reducers: {
         addArticles(state, action) {
             state.articles = action.payload;
           },
+        resetArticles(state) {
+          state.articles = [];
+          state.loading = true;
+        },
+        setLoading(state, action) {
+          state.loading = action.payload;
+        },
         addArticle(state, action) {
             state.articles = [action.payload]
         },
@@ -21,7 +29,7 @@ const articlesSlice = createSlice({
             state.articlesCount = action.payload;
           },
           setPage(state, action) {
-            state.page = action.payload;
+            state.currPage = action.payload;
           },
           setLimit(state, action) {
             state.limit = action.payload;
@@ -29,9 +37,12 @@ const articlesSlice = createSlice({
           setArticle(state, action) {
             state.article = action.payload;
           },
-    }
+          setLiked(state, action) {
+            state.articles = state.articles.map((art) => (art.slug === action.payload.slug ? action.payload : art))
+          },
+    },
 }
 )
 
 export default articlesSlice.reducer;
-export const {addArticles, addArticle, addArticlesCount, setPage, setLimit, setArticle} = articlesSlice.actions;
+export const {addArticles, resetArticles, addArticle, addArticlesCount, setPage, setLimit, setArticle, setLoading, setLiked} = articlesSlice.actions;

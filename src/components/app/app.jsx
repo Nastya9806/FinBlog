@@ -1,52 +1,29 @@
-// // import classes from '*.module.css'
-// import React from 'react'
-// import { Route, Routes } from 'react-router-dom'
-// import Header from '../header/header'
-// import ListArticle from '../list-article/list-article'
-// import classes from './app.module.scss'
-// // import Rating from '@mui/material/Rating';
-// import ArticlesList from '../list-article/list-article';
-// // import { Layout, Space } from 'antd';
-// // const { Header, Footer, Sider, Content } = Layout;
-
-// function App() {
-//     // return (
-//     //   <Routes>
-//     //     <Route path="/" element={<Header />}>
-//     //       <Route index element={<Home />} />
-//     //       <Route path="/articles" element={<ListArticle />} />
-//     //       <Route path="/articles/:slug" element={<ArticlePage />} />
-//     //       <Route path="/sign-up" element={<SignUp />} />
-//     //       <Route path="/sign-in" element={<SignIn />} />
-//     //       <Route path="/profile" element={<SignIn />} />
-//     //       /profile
-//     //     </Route>
-//     //   </Routes>
-//     // )
-//     return(
-//         <div className={classes.wrapper}>
-//             <Header />
-//             <ArticlesList />
-//             </div>
-//     )
-//   }
-// export default App
-
 import React from 'react';
-import { Container } from '@mui/material';
-import Header from '../header/header';
-import ArticleList from '../list-article/list-article';
-import classes from './app.module.scss';
-
+import { Route, Routes } from 'react-router-dom'
+import ArticleList from '../../pages/list-article';
+// import classes from './app.module.scss';
+import Layout from '../layout/layout'
+import SingleArticle from '../../pages/single-article';
+import SignIn from '../sign-in-form/sign-in'
+import SignUp from '../sign-up-form/sign-up'
+import ArticleForm from '../../pages/article-form'
+import EditProfile from '../edit-profile/edit-profile'
 const App = () => {
 
   return (
-    <div className={classes.app}>
-      <Header />
-      <Container className={classes.main} sx={{ mt: '80px' }}>
-      <ArticleList />
-    </Container>
-      {/* <Main /> */}
+    <div >
+      <Routes>
+        <Route path="/" element={<Layout />}>
+        {/* <Route path="/" element={<Navigate to="/articles" />} /> */}
+        <Route path="/articles" element={<ArticleList />} />
+        <Route path="/articles/:slug" element={<SingleArticle />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/new-article" element={<ArticleForm />} />
+        <Route path="/profile" element={<EditProfile />} />
+        <Route path="/articles/:slug/edit" element={<ArticleForm />} />
+    </Route>
+    </Routes>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import axios from "axios";
-import {addArticles, addArticlesCount, setArticle} from '../redux/articles'
-// import {setStatus} from "../store/status-slice";
+import {addArticles, addArticlesCount, setArticle, setLiked} from '../redux/articles'
 import React from "react";
 import {format} from "date-fns";
-
+import {cutDescription} from '../utilities/format'
+import { setStatus, goHome, setSubmit, setGoTo } from '../redux/status'
 
 const baseUrl = 'https://blog.kata.academy';
 const tagQuery = '';
@@ -13,17 +13,25 @@ const author = authorQuery ? `&author=${authorQuery}` : '';
 const favQuery = '';
 const favorited = favQuery ? `&favorited=${favQuery}` : '';
 
+const getHeaders = (token) => ({
+  'Content-Type': 'application/json',
+  Authorization: `Token ${token}`,
+})
+
 const getArticleItems = (articles) => articles.map((article) => {
+  // console.log(article)
   return {
     slug: article.slug,
-    headerTitle: strCut(article.title, 40),
+    headerTitle: cutDescription(article.title, 40),
     title: article.title,
     likes: article.favoritesCount,
     tags: article.tagList,
     description: article.description,
+    // description: cutDescription(article.description, 200),
     username: article.author.username, 
     updatedDate: format(new Date(article.updatedAt), "MMMM d, yyyy"),
     avatarPath: article.author.image,
+    text: article.body,
   };
 });
 
@@ -31,7 +39,8 @@ const getArticleItem = (article) => {
   return {
     slug: article.slug,
     title: article.title,
-    headerTitle: strCut(article.title, 40),
+    // headerTitle: cutDescription(article.title, 40),
+    headerTitle: cutDescription(article.title, 40),
     likes: article.favoritesCount,
     tags: article.tagList,
     text: article.body,
@@ -43,33 +52,20 @@ const getArticleItem = (article) => {
 };
 
 
-export const fetchArticles = (page, limit) => async (dispatch) => {
-  axios(`${baseUrl}/api/articles?${tag}${author}${favorited}&limit=${limit}&offset=${(page - 1) * limit}`)
-    .then((res) => res.data)
+export const fetchArticles = (page, limit, token = '') => async (dispatch) => {
+  axios(`${baseUrl}/api/articles?${tag}${author}${favorited}&limit=${limit}&offset=${(page - 1) * limit}`, {headers: getHeaders(token)})
+  .then((res) => res.data)
     .then((data) => {
       if (data.articles.length !== 0) {
-        console.log("newArt>", getArticleItems(data.articles));
+        // dispatch(setLoading(false))
         dispatch(addArticles(getArticleItems(data.articles)));
         dispatch(addArticlesCount(data.articlesCount));
-        // dispatch(setStatus('ok'));
       } else {
-        // dispatch(setStatus('404'));
         console.log('что такое')
       }
     })
     .catch((err) => {
       console.log("err Code>", err.code, err);
-    //   switch (err.code) {
-    //     case "ERR_BAD_REQUEST":
-    //       dispatch(setStatus('404'));
-    //       break;
-    //     case "ERR_NETWORK":
-    //       dispatch(setStatus('error'));
-    //       break;
-    //     default:
-    //       dispatch(setStatus('error'));
-    //       break;
-    //   }
     });
 };
 
@@ -79,27 +75,69 @@ export const fetchArticle = (slug) => async (dispatch) => {
     .then((res) => res.data)
     .then((data) => {
       console.log(data.article)
+      // console.log(data.article)
       dispatch(setArticle(getArticleItem(data.article)));
-    //   dispatch(setStatus('ok'));
+    //   сверху было getArticleItem, я добавила s -- нужно его удалить, если что
     });
-};
+}; 
 
 
-export const strCut = (str = "", length) => {
-  let arr = str.split(' ');
-  if (arr[0].length > 30) {
-    const shortWord = str.substring(0, 60);
-    return `${shortWord}...`;
-  }
-  if (str.length < length) {
-    return str;
-  }
+export const editArticle = (data, tags, token, slug) => async (dispatch) => {
+  // const article = JSON.stringify({ article: { ...data, tagList: tags } })
+  const {title, description, text: body} = data
+  const article = JSON.stringify({ article: { 
+    title,
+    description,
+    body,
+    tagList: tags } 
+  })
+  console.log(article)
+  return axios({
+    url: slug ? `${baseUrl}/api/articles/${slug}` : `${baseUrl}/api/articles`,
+    method: slug ? 'put' : 'post',
+    headers: getHeaders(token),
+    data: article,
+  })
+    .then((res) => {
+      dispatch(setStatus('ok'))
+      dispatch(setGoTo(res.data.article.slug))
+      dispatch(setSubmit(true))
+    })
+    .catch(() => {
+      dispatch(setSubmit(true))
+      dispatch(setStatus('error'))
+    })
+}
 
-  const newStr = str.substring(0, length);
-  const lastSpace = newStr.lastIndexOf(' ');
-  let shortDesc = newStr.slice(0, lastSpace);
-  if (/[.,:]/.test(shortDesc.split(' ').pop())) {
-    shortDesc = shortDesc.slice(0, -1);
-  }
-  return `${shortDesc}...`;
-};
+export const deleteArticle = (token, slug) => async (dispatch) =>
+  axios({
+    url: `${baseUrl}/api/articles/${slug}`,
+    method: 'delete',
+    headers: getHeaders(token),
+  })
+    .then((res) => res.data)
+    .then(() => {
+      dispatch(setStatus('ok'))
+      dispatch(goHome(true))
+      dispatch(setSubmit(true))
+    })
+    .catch(() => {
+      dispatch(setSubmit(true))
+      dispatch(setStatus('error'))
+    })
+
+export const setLike = (token, slug, liked) => async (dispatch) =>
+  axios({
+    url: `${baseUrl}/api/articles/${slug}/favorite`,
+    method: liked ? 'delete' : 'post',
+    headers: getHeaders(token),
+  })
+    .then((res) => {
+      dispatch(setStatus('ok'))
+      dispatch(setLiked(getArticleItem(res.data.article)))
+    })
+    .catch(() => {
+      dispatch(setSubmit(true))
+      dispatch(setStatus('error'))
+    })
+
