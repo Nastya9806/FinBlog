@@ -20,8 +20,8 @@ const SingleArticle = () => {
         <>
           <Paper sx={{ pb: 2, mb: 2 }}>
             <ArticleCard post={article} singlePage />
-            <Box sx={{ p: 2 }}>
-              <Typography component="span">
+            <Box sx={{ p: 2, paddingRight: '20px' }}>
+              <Typography component="span" sx={{wordWrap: 'break-word'}}>
                 <ReactMarkdown>{article.text}</ReactMarkdown>
               </Typography>
             </Box>

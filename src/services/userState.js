@@ -32,6 +32,7 @@ const getHeaders = (token) => ({
       })
       .catch((err) => {
         dispatch(setErrors(err.response.data.errors))
+        console.log(err)
       })
   }
 

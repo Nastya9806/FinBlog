@@ -19,7 +19,6 @@ const getHeaders = (token) => ({
 })
 
 const getArticleItems = (articles) => articles.map((article) => {
-  // console.log(article)
   return {
     slug: article.slug,
     headerTitle: cutDescription(article.title, 40),
@@ -27,11 +26,11 @@ const getArticleItems = (articles) => articles.map((article) => {
     likes: article.favoritesCount,
     tags: article.tagList,
     description: article.description,
-    // description: cutDescription(article.description, 200),
     username: article.author.username, 
     updatedDate: format(new Date(article.updatedAt), "MMMM d, yyyy"),
     avatarPath: article.author.image,
     text: article.body,
+    liked: article.favorited,
   };
 });
 
@@ -48,6 +47,7 @@ const getArticleItem = (article) => {
     username: article.author.username,
     updatedDate: format(new Date(article.updatedAt), "MMMM d, yyyy"),
     avatarPath: article.author.image,
+    liked: article.favorited,
   };
 };
 

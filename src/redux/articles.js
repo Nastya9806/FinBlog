@@ -15,10 +15,6 @@ const articlesSlice = createSlice({
         addArticles(state, action) {
             state.articles = action.payload;
           },
-        resetArticles(state) {
-          state.articles = [];
-          state.loading = true;
-        },
         setLoading(state, action) {
           state.loading = action.payload;
         },

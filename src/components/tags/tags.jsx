@@ -1,13 +1,8 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, {useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
-// import styles from '../new-article/new-article.module.scss'
 import { addTag, deleteTag, editTag } from '../../redux/tags'
-import { Box, Button, TextField } from '@mui/material';
-// const tagStyle = classNames(styles.input, styles.tag)
-// const deleteBtn = classNames(styles.btn, styles.delete)
-// const addBtn = classNames(styles.btn, styles.add)
+import { Box, Button, TextField, Stack } from '@mui/material';
 
 function Tag({ id, idx, tagsLength, value }) {
 
@@ -22,7 +17,7 @@ function Tag({ id, idx, tagsLength, value }) {
   const onAdd = () => {
     dispatch(addTag())
   }
-
+  const [tagName, setTagValue] = useState('');
   const onLabelChange = (val) => {
     if (val !== undefined) {
       dispatch(
@@ -34,23 +29,27 @@ function Tag({ id, idx, tagsLength, value }) {
     }
   }
 
+
   return (
     <>
-              <Box key={uuidv4()} sx={{ mb: 2 }}>
+              <Box key={uuidv4()} sx={{ mb: 2, display: 'flex' }}>
                 <TextField 
                 type="text"
                 id={id} 
                 value={value} 
                 size="small" sx={{ mr: 2 }}
-                onChange={(e) => onLabelChange(e.target.value)}
+                onChange={(event) => {
+                  onLabelChange(event.target.value)
+                }}
                 />
+                <Stack direction="row" spacing={1}>
                {tagsLength > 1 && <Button
                   variant="outlined"
                   color="error"
                   sx={{
                     textTransform: 'none',
                   }}
-                //   onClick={() => handleClickDeleteTag(id)}
+                  onClick={() => onDelete(id)}
                 >
                   Delete
                 </Button>}
@@ -63,7 +62,9 @@ function Tag({ id, idx, tagsLength, value }) {
             onClick={onAdd}
           >
             Add Tag
-          </Button>}
+          </Button>
+          }
+          </Stack>
               </Box>
     </>
   )

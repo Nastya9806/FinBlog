@@ -9,12 +9,9 @@ const tagsSlice = createSlice({
   reducers: {
     createTags(state, action) {
       state.tags = action.payload
-      console.log(state.tags)
     },
     addTag(state) {
-      // state.tags.push({ id: uuidv4(), label: '' })
       state.tags.push({ id: uuidv4(), label: '' })
-      console.log(state.tags)
     },
     deleteTag(state, action) {
       state.tags = state.tags.filter((tag) => tag.id !== action.payload)

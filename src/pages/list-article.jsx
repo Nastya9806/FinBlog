@@ -22,7 +22,7 @@ const ArticleList = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch(setLoading(true))
-    dispatch(resetArticles())
+    // dispatch(resetArticles())
     dispatch(fetchArticles(currPage, limit))
     dispatch(setLoading(false))
   }, [dispatch, currPage]);

@@ -163,7 +163,6 @@ const onSubmit = (data) => {
           />
           <Typography>Tags</Typography>
           {tagList}
-          {/* <Divider sx={{ mb: 2 }} /> */}
           <Button
             type="submit"
             variant="contained"

@@ -8,8 +8,8 @@ import SignIn from '../sign-in-form/sign-in'
 import SignUp from '../sign-up-form/sign-up'
 import ArticleForm from '../../pages/article-form'
 import EditProfile from '../edit-profile/edit-profile'
-const App = () => {
 
+const App = () => {
   return (
     <div >
       <Routes>
