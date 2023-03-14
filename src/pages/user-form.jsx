@@ -18,15 +18,15 @@ const UserForm = ({signUp}) => {
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required('Поле "Имя пользователя" должно быть заполнено')
-      .min(3, 'Имя пользователя не должно содержать менее 3 символов')
-      .max(20, 'Имя пользователя не должно содержать более 20 символов'),
+      .min(3, 'Имя пользователя должно содержать не менее 3 символов')
+      .max(20, 'Имя пользователя должно содержать более 20 символов'),
     email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
     password: Yup.string()
       .min(6, 'Поле "Password" не должно содержать менее 6 символов')
       .required('Поле "Password" должно быть заполнено'),
     confirmPassword: Yup.string()
       .required('Поле "Confirm Password" должно быть заполнено')
-      .oneOf([Yup.ref('password'), null], 'Passwords должны совпадать'),
+      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
     acceptPersonalInf: Yup.bool().oneOf([true], 'Предоставьте согласие на обработку персональных данных'),
     avatarUrl: Yup.string().url('Введите корректный URL'),
   });
@@ -36,22 +36,12 @@ const UserForm = ({signUp}) => {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    // defaultValues: {
-    //   userName: user?.username,
-    //   email: user?.email,
-    //   avatarUrl: user?.image,
-    // },
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
 
 
   const dispatch = useDispatch();
-  
-  const location = useLocation();
-
-  const servErr = useSelector((state) => state.user.errors)
-  const { user } = useSelector((state) => state.user)
 
   const onSubmit = (data) => {
     signUp ? dispatch(setSubmit(false)) &&

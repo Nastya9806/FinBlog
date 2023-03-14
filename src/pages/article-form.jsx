@@ -1,23 +1,19 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid'
 import { Box, Button, Container, Divider, Paper, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createArticle, editArticle } from '../services/kata'
+import { editArticle } from '../services/kata'
 import { setErrors } from '../redux/user'
-import { createTags } from '../redux/tags'
 import { setSubmit } from '../redux/status'
 import { useParams, useNavigate } from 'react-router-dom';
-// import uniqKey from '../utilites/uniqKey';
-import { addTag, deleteTag, editTag } from '../redux/tags'
-import Tag from '../components/tags/tags'
+
  
 
 const ArticleForm = () => {
     const { slug } = useParams()
-
     const { articles } = useSelector((state) => state.articles)
     const article = articles.find((item) => item.slug === slug)
 
@@ -43,22 +39,16 @@ const ArticleForm = () => {
 const dispatch = useDispatch()
 const navigate = useNavigate()
 
+const [tagList, setTagList] = useState(article?.tagList || []);
+const [tagValue, setTagValue] = useState('');
 
-
-   
-  const { tags } = useSelector((state) => state.tags)
   const { token, username } = useSelector((state) => state.user.user)
   const { home, goTo } = useSelector((state) => state.status)
 
-  const tagList = tags.map((tag, idx) => (
-  <Tag key={uuidv4()} idx={idx} id={tag.id} value={tag.label} tagsLength={tags.length} />
-  ))
-const sendTags = tags.map((tag) => tag.label).filter((tag) => tag !== '')
 
 const onSubmit = (data) => {
   dispatch(setSubmit(false))
-  console.log(data)
-  slug ? dispatch(editArticle(data, sendTags, token, slug)) : dispatch(editArticle(data, sendTags, token))
+  slug ? dispatch(editArticle(data, tagList, token, slug)) : dispatch(editArticle(data, tagList, token))
 }
 
   const memToken = useMemo(() => token, [])
@@ -74,22 +64,14 @@ const onSubmit = (data) => {
     dispatch(setErrors(null))
   }, [home, dispatch, navigate, memToken, slug])
 
+  const onAdd = () => {
+     setTagList([...tagList, tagValue]);
+    setTagValue('');
+  }
 
-  useEffect(() => {
-    if (slug && article && Object.keys(article).length > 0) {
-      const newTags = []
-      article.tags.forEach((tag) => {
-        newTags.push({
-          id: uuidv4(),
-          label: tag, 
-        })
-      })
-      dispatch(createTags(newTags))
-    } else {
-      dispatch(createTags([{ id: uuidv4(), label: '' }]))
-    }
-  }, [dispatch, slug, article])
-
+  const onDelete = (id) => {
+   setTagList(tagList.filter((_, index) => index !== id));
+  }
 
   return (
     <Container
@@ -162,7 +144,47 @@ const onSubmit = (data) => {
             helperText={errors?.text?.message}
           />
           <Typography>Tags</Typography>
-          {tagList}
+          <Box>
+        {tagList && tagList.map((item, id) => {
+          return(<Box key={uuidv4()} sx={{ mb: 2 }}>
+          <TextField disabled id={item} value={item} size="small" sx={{ mr: 2 }} />
+           <Button
+             variant="outlined"
+             color="error"
+             sx={{
+               textTransform: 'none',
+             }}
+             onClick={() => onDelete(id)}
+           >
+             Delete
+           </Button>
+         </Box>)
+        
+        })}
+         <TextField
+            id="tag"
+            value={tagValue}
+            variant="outlined"
+            size="small"
+            sx={{
+              mr: 1,
+            }}
+            onChange={(event) => {
+              setTagValue(event.target.value);
+            }}
+          />
+
+          <Button
+            variant="outlined"
+            sx={{
+              mb: 2,
+              textTransform: 'none',
+            }}
+            onClick={onAdd}
+          >
+            Add Tag
+          </Button>
+          </Box>
           <Button
             type="submit"
             variant="contained"

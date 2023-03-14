@@ -10,7 +10,6 @@ const Header = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.user)
   const avatar = user.image ? user.image : null
-
   const onLogOut = () => {
     localStorage.removeItem('user')
     dispatch(logOut())

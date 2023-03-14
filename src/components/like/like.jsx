@@ -1,43 +1,32 @@
 import React, {useState} from 'react'
-import { setLike, fetchArticle, fetchArticles } from '../../services/kata'
-import { useSelector, useDispatch } from 'react-redux';
+import { setLike } from '../../services/kata'
+import { useDispatch } from 'react-redux';
 import { Checkbox } from '@mui/material'
 import { FavoriteBorder, Favorite} from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
 
 
-function Like({user, token, post}) {
-
+function Like({ token, post }) {
     const [favoriteCount, setFavoriteCount] = useState(post.favoritesCount);
     const dispatch = useDispatch()
-    const { location } = useSelector((state) => state.status)
-    const { page, limit } = useSelector((state) => state.articles)
+    const isCheckedStorage = localStorage.getItem(`${post.slug}`) && token ? true : false
 
-   const isChecked = localStorage.getItem(`${post.slug}`) ? true : false
-
-      const onLike = (e) => {
-          if(e.target){
-        if (token) {
+    const onLike = () => {
+        if (post.slug) {
           setFavoriteCount(favoriteCount + 1);
           dispatch(setLike(token, post.slug, post.liked))
           localStorage.setItem(`${post.slug}`, `${post.slug}`)
-          location === 'article-page'
-            ? dispatch(fetchArticle(post.slug, token))
-            : dispatch(fetchArticles(page, limit, token))
-        }
     } 
       }
-
+  
     return(
         <Box>
         <Checkbox 
         icon={<FavoriteBorder />} 
-        disabled={!user}
-        checked={isChecked} 
+        disabled={!token}
+        checked={isCheckedStorage} 
         checkedIcon={<Favorite sx={{ color: 'red' }} />} 
-        onChange={(e) => onLike(e)} />
+        onChange={onLike} />
       </Box>
     )
 }

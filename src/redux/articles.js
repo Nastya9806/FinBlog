@@ -21,19 +21,19 @@ const articlesSlice = createSlice({
         addArticle(state, action) {
             state.articles = [action.payload]
         },
-          addArticlesCount(state, action) {
+        addArticlesCount(state, action) {
             state.articlesCount = action.payload;
           },
-          setPage(state, action) {
+        setPage(state, action) {
             state.currPage = action.payload;
           },
-          setLimit(state, action) {
+        setLimit(state, action) {
             state.limit = action.payload;
           },
-          setArticle(state, action) {
+        setArticle(state, action) {
             state.article = action.payload;
           },
-          setLiked(state, action) {
+        setLiked(state, action) {
             state.articles = state.articles.map((art) => (art.slug === action.payload.slug ? action.payload : art))
           },
     },

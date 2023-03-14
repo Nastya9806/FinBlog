@@ -6,8 +6,8 @@ import {cutDescription} from '../utilities/format'
 import { setStatus, goHome, setSubmit, setGoTo } from '../redux/status'
 
 const baseUrl = 'https://blog.kata.academy';
-const tagQuery = '';
-const tag = tagQuery ? `&tag=${tagQuery}` : '';
+// const tagQuery = '';
+const tag = '' ? `&tag=${''}` : '';
 const authorQuery = '';
 const author = authorQuery ? `&author=${authorQuery}` : '';
 const favQuery = '';
@@ -58,6 +58,7 @@ export const fetchArticles = (page, limit, token = '') => async (dispatch) => {
     .then((data) => {
       if (data.articles.length !== 0) {
         // dispatch(setLoading(false))
+        dispatch(setStatus('ok'))
         dispatch(addArticles(getArticleItems(data.articles)));
         dispatch(addArticlesCount(data.articlesCount));
       } else {
@@ -75,6 +76,7 @@ export const fetchArticle = (slug) => async (dispatch) => {
     .then((res) => res.data)
     .then((data) => {
       console.log(data.article)
+      dispatch(setStatus('ok'))
       // console.log(data.article)
       dispatch(setArticle(getArticleItem(data.article)));
     //   сверху было getArticleItem, я добавила s -- нужно его удалить, если что
@@ -83,13 +85,13 @@ export const fetchArticle = (slug) => async (dispatch) => {
 
 
 export const editArticle = (data, tags, token, slug) => async (dispatch) => {
-  // const article = JSON.stringify({ article: { ...data, tagList: tags } })
   const {title, description, text: body} = data
   const article = JSON.stringify({ article: { 
     title,
     description,
     body,
-    tagList: tags } 
+    tagList: tags 
+  } 
   })
   console.log(article)
   return axios({

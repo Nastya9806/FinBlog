@@ -19,7 +19,8 @@ function ArticleCard({post, singlePage}) {
   const { token } = useSelector((state) => state.user.user)
   const onDelete = () => {
     dispatch(deleteArticle(token, slug))
-    navigate('/')
+    // navigate('/')
+    navigate('/', { replace: true })  
 }
 
 const editLink = `/articles/${slug}/edit`
@@ -28,7 +29,7 @@ const editLink = `/articles/${slug}/edit`
       <Grid container columnSpacing={2} sx={{height: '100%', justifyContent: 'space-between'}}>
         <Grid item xs={10} sx={{width: '682px', wordWrap: 'break-word'}}>
           <Grid container direction="row" justifyContent="flex-start" alignItems="center">
-          <Link to={post.slug} style={{ textDecoration: 'none' }}>
+          <Link to={`/articles/${post.slug}`} style={{ textDecoration: 'none' }}>
             <Typography variant="h5" color="#1890FF" sx={{ mr: '5px' }}>
               {cutTitle(post.headerTitle)}
             </Typography>
@@ -38,7 +39,7 @@ const editLink = `/articles/${slug}/edit`
           </Grid>
               {post.tags && post.tags.map((item) => {
               return item ? (
-                  <Typography
+                  <Typography 
                   variant="caption"
                   component="span"
                   sx={{
@@ -68,8 +69,7 @@ const editLink = `/articles/${slug}/edit`
               <Typography variant="h6">{post.username}</Typography>
               <Typography variant="body2" sx={{ color: '#808080' }}>
                 {post.updatedDate}
-              </Typography>
-              
+              </Typography>             
             </Box>
             { user && user.username === post.username && singlePage &&
               <Box sx={{ p: 0, display: 'flex', gap: '5px', justifyContent: 'space-between' }}>

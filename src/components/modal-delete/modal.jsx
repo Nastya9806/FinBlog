@@ -1,24 +1,28 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import Alert from './exclamation-circle.png'
+import classes from './modal.module.scss'
 
 const ModalWindow = ({ modal, handleCloseModal, handleClickDelete }) => (
-  <Dialog
+
+<Dialog
     open={modal}
     onClose={handleCloseModal}
-    aria-labelledby="alert-dialog-title"
     aria-describedby="alert-dialog-description"
+    className={classes.modal}
   >
-    <DialogTitle id="alert-dialog-title">Delete article</DialogTitle>
-    <DialogContent>
+    <DialogContent sx={{display: 'flex', gap: '10px'}}>
+      <img style={{width: '20px', height: '20px'}} src={Alert}/>
       <DialogContentText id="alert-dialog-description">Are you sure to delete this article?</DialogContentText>
     </DialogContent>
     <DialogActions>
       <Button onClick={handleCloseModal} autoFocus>
-        Отмена
+        No
       </Button>
-      <Button onClick={handleClickDelete}>Удалить</Button>
+      <Button className={classes.btn} onClick={handleClickDelete}>Yes</Button>
     </DialogActions>
   </Dialog>
-);
+  
+)
 
 export default ModalWindow;
