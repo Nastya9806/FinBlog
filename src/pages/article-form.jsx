@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid'
-import { Box, Button, Container, Divider, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,8 +42,7 @@ const navigate = useNavigate()
 const [tagList, setTagList] = useState(article?.tagList || []);
 const [tagValue, setTagValue] = useState('');
 
-  const { token, username } = useSelector((state) => state.user.user)
-  const { home, goTo } = useSelector((state) => state.status)
+const { token, username } = useSelector((state) => state.user.user)
 
 
 const onSubmit = (data) => {
@@ -51,18 +50,11 @@ const onSubmit = (data) => {
   slug ? dispatch(editArticle(data, tagList, token, slug)) : dispatch(editArticle(data, tagList, token))
 }
 
-  const memToken = useMemo(() => token, [])
-
-  useEffect(() => {
-    if (goTo) navigate(`/articles/${goTo}`)
-  }, [goTo])
-
   useEffect(() => {
     if (slug && article?.username !== username) navigate('/')
-    if (!memToken) navigate('/')
-    if (home) navigate('/')
+    if (!token) navigate('/')
     dispatch(setErrors(null))
-  }, [home, dispatch, navigate, memToken, slug])
+  }, [ dispatch, navigate, token, slug])
 
   const onAdd = () => {
      setTagList([...tagList, tagValue]);

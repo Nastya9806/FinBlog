@@ -120,7 +120,7 @@ export const deleteArticle = (token, slug) => async (dispatch) =>
     .then((res) => res.data)
     .then(() => {
       dispatch(setStatus('ok'))
-      dispatch(goHome(true))
+      // dispatch(goHome(true))
       dispatch(setSubmit(true))
     })
     .catch(() => {

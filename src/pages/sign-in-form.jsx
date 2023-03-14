@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import { registerUser } from '../services/userState'
-import { setErrors } from '../redux/user'
+// import { setErrors } from '../redux/user'
 // import signUp from '../sign-up/sign-up.module.scss'
 import { setSubmit } from '../redux/status'
 
@@ -30,20 +30,15 @@ const SignInForm = () => {
   });
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const onSubmit = (data) => {
     dispatch(setSubmit(false))
     dispatch(registerUser(data, true))
+    navigate('/')
   }
 
-  const navigate = useNavigate()
-  const home = useSelector((state) => state.status.home)
-  useEffect(() => {
-    dispatch(setErrors(null))
-    if (home) navigate('/')
-  }, [home, dispatch, navigate])
 
-  const { submitActive } = useSelector((state) => state.status)
 
   return (
     <Box

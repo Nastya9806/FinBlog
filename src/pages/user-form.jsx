@@ -22,7 +22,7 @@ const UserForm = ({signUp}) => {
       .max(20, 'Имя пользователя должно содержать более 20 символов'),
     email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
     password: Yup.string()
-      .min(6, 'Поле "Password" не должно содержать менее 6 символов')
+      .min(6, 'Поле "Password" должно содержать не менее 6 символов')
       .required('Поле "Password" должно быть заполнено'),
     confirmPassword: Yup.string()
       .required('Поле "Confirm Password" должно быть заполнено')
@@ -167,8 +167,7 @@ const UserForm = ({signUp}) => {
 
               <FormControlLabel
                 control={<Checkbox {...register('acceptPersonalInf')} />}
-                label="I agree to the processing of my personal
-information"
+                label="I agree to the processing of my personal information"
               />
               {!!errors?.acceptPersonalInf && (
                 <Typography variant="caption" display="block" gutterBottom sx={{ color: 'red' }}>

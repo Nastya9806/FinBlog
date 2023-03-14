@@ -6,6 +6,7 @@ import { Box, Typography, Paper, Grid } from '@mui/material';
 
 import { fetchArticle } from '../services/kata'
 import ArticleCard from '../components/article-card/article-card'
+import { setLocation } from '../redux/status';
 
 const SingleArticle = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const SingleArticle = () => {
   const { token } = useSelector((state) => state.user.user)
   const article = useSelector((state) => state.articles.article);
   useEffect(() => {
+    setLocation('single-article')
     dispatch(fetchArticle(slug, token));
   }, [dispatch, slug]);
 

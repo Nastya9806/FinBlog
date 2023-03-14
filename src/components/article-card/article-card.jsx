@@ -19,8 +19,8 @@ function ArticleCard({post, singlePage}) {
   const { token } = useSelector((state) => state.user.user)
   const onDelete = () => {
     dispatch(deleteArticle(token, slug))
-    // navigate('/')
-    navigate('/', { replace: true })  
+    navigate('/')
+    // navigate('/', { replace: true })  
 }
 
 const editLink = `/articles/${slug}/edit`

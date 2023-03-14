@@ -35,9 +35,11 @@ const Header = () => {
   <Link to="/profile" style={{ textDecoration: 'none' }}>
     <Avatar alt="Avatar" src={avatar} sx={{ width: 46, height: 46 }} />
   </Link>
+  <Link to="/" style={{ textDecoration: 'none' }}>
   <Button color="inherit" variant="outlined" sx={{ textTransform: 'none' }} onClick={onLogOut}>
     Log Out
   </Button>
+  </Link>
 </>
 
 const base = <>

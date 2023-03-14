@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import {setPage, setLoading, resetArticles} from '../redux/articles'
-import {setStatus} from '../redux/status'
+import {setStatus, setLocation, goHome} from '../redux/status'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
@@ -21,6 +21,8 @@ const ArticleList = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    // dispatch(goHome(false))
+    dispatch(setLocation('articles-list'))
     dispatch(setStatus('loading'))
     dispatch(fetchArticles(currPage, limit))
   }, [dispatch, currPage]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import ArticleList from '../../pages/list-article';
 // import classes from './app.module.scss';
 import Layout from '../layout/layout'
@@ -11,10 +11,9 @@ import EditProfile from '../edit-profile/edit-profile'
 
 const App = () => {
   return (
-    <div >
+    <div > 
       <Routes>
         <Route path="/" element={<Layout />}>
-        {/* <Route path="/" element={<Navigate to="/articles" />} /> */}
         <Route index element={<ArticleList />} />
         <Route path="/articles" element={<ArticleList />} />
         <Route path="/articles/:slug" element={<SingleArticle />} />

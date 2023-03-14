@@ -49,7 +49,7 @@ export const registerUser = (data, login) => async (dispatch) => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         dispatch(setUser({ user: res.data.user }))
         dispatch(setErrors(null))
-        dispatch(goHome(true))
+        // dispatch(goHome(true))
         dispatch(setSubmit(true))
       })
       .catch((err) => {
@@ -74,7 +74,7 @@ export const registerUser = (data, login) => async (dispatch) => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         dispatch(setUser({ user: res.data.user }))
         dispatch(setErrors(null))
-        dispatch(goHome(true))
+        // dispatch(goHome(true))
         dispatch(setSubmit(true))
       })
       .catch((err) => {
