@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material'
@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useParams, useNavigate } from 'react-router-dom'
 
 import { editArticle } from '../services/kata'
-import { setErrors } from '../redux/slices/user'
 
 const ArticleForm = () => {
   const { slug } = useParams()
@@ -40,18 +39,12 @@ const ArticleForm = () => {
   const [tagList, setTagList] = useState(article?.tagList || [])
   const [tagValue, setTagValue] = useState('')
 
-  const { token, username } = useSelector((state) => state.user.user)
+  const { token } = useSelector((state) => state.user.user)
 
   const onSubmit = (data) => {
     slug ? dispatch(editArticle(data, tagList, token, slug)) : dispatch(editArticle(data, tagList, token))
     navigate('/articles')
   }
-
-  useEffect(() => {
-    if (slug && article?.username !== username) navigate('/')
-    if (!token) navigate('/')
-    dispatch(setErrors(null))
-  }, [dispatch, navigate, token, slug])
 
   const onAdd = () => {
     setTagList([...tagList, tagValue])

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Checkbox, Divider, FormControlLabel, Paper, TextField, Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,7 +11,7 @@ import { registerUser, updateUser } from '../../services/userState'
 const UserForm = ({ signUp, user }) => {
   const formTitle = signUp ? 'Create new account' : 'Edit Profile'
   const buttonLabel = signUp ? 'Create' : 'Save'
-
+  const servErr = useSelector((state) => state.user.errors)
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required('Поле "Имя пользователя" должно быть заполнено')
@@ -45,9 +45,8 @@ const UserForm = ({ signUp, user }) => {
   const navigate = useNavigate()
   const onSubmit = (data) => {
     signUp ? dispatch(registerUser(data, false)) : dispatch(updateUser(data))
-    navigate('/articles')
+    navigate('/')
   }
-
   return (
     <>
       <Box
@@ -73,21 +72,24 @@ const UserForm = ({ signUp, user }) => {
             >
               {formTitle}
             </Typography>
-
-            <TextField
-              id="username"
-              label="User name"
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{
-                mb: 1,
-              }}
-              {...register('username')}
-              error={!!errors?.username}
-              helperText={errors?.username?.message}
-            />
-
+            <div>
+              <TextField
+                id="username"
+                label="User name"
+                variant="outlined"
+                size="small"
+                fullWidth
+                sx={{
+                  mb: 0,
+                }}
+                {...register('username')}
+                error={!!errors?.username}
+                helperText={errors?.username?.message}
+              />
+              {servErr?.username && (
+                <Typography sx={{ color: 'red', fontSize: '12px', p: '0px' }}>{servErr?.username}</Typography>
+              )}
+            </div>
             <TextField
               id="email"
               type="email"
@@ -96,12 +98,15 @@ const UserForm = ({ signUp, user }) => {
               size="small"
               fullWidth
               sx={{
-                mb: 1,
+                mt: 1,
               }}
               {...register('email')}
               error={!!errors?.email}
               helperText={errors?.email?.message}
             />
+            {servErr?.email && (
+              <Typography sx={{ color: 'red', fontSize: '12px', p: '0px' }}>{servErr?.email}</Typography>
+            )}
 
             <TextField
               id="password"
@@ -111,7 +116,7 @@ const UserForm = ({ signUp, user }) => {
               size="small"
               fullWidth
               sx={{
-                mb: 1,
+                mt: 1,
               }}
               {...register('password')}
               error={!!errors?.password}
@@ -126,6 +131,7 @@ const UserForm = ({ signUp, user }) => {
               fullWidth
               sx={{
                 mb: 2,
+                mt: 1,
               }}
               {...register('confirmPassword')}
               error={!!errors?.confirmPassword}

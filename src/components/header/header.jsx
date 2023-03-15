@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { logOut } from '../../redux/slices/user'
 import { getUser } from '../../services/userState'
-import ErrorDetected from '../../UI/error'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { user, errors } = useSelector((state) => state.user)
+  const { user } = useSelector((state) => state.user)
   const avatar = user.image ? user.image : null
   const onLogOut = () => {
     localStorage.removeItem('user')
@@ -73,7 +72,6 @@ const Header = () => {
           </Typography>
         </Link>
         {user.token ? authorized : base}
-        {errors && <ErrorDetected />}
       </Toolbar>
     </AppBar>
   )

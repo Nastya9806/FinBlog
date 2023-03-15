@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid'
 
 const defaultUnregistered = {
   image: '',
@@ -14,8 +13,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : defaultUnregistered,
-    errors: '',
-    id: uuidv4(),
+    errors: null,
   },
   reducers: {
     logOut(state) {

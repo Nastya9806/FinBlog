@@ -27,9 +27,10 @@ export const getUser = (token) => async (dispatch) => {
     .then((res) => {
       localStorage.setItem('user', JSON.stringify(res.data.user))
       dispatch(setUser({ user: res.data.user }))
+      dispatch(setErrors(null))
     })
-    .catch(() => {
-      dispatch(setErrors('getUser ошибка'))
+    .catch((err) => {
+      dispatch(setErrors(err.response.data.errors))
     })
 }
 
@@ -49,32 +50,10 @@ export const registerUser = (data, login) => async (dispatch) => {
     .catch((err) => {
       if (err?.response?.status === 422) {
         dispatch(setUser(JSON.parse(user)))
-      } else {
-        dispatch(setErrors('register ошибка'))
+        dispatch(setErrors(err.response.data.errors))
+      
       }
-    })
-}
-
-export const loginUser = (data, login) => async (dispatch) => {
-  const user = JSON.stringify({
-    user: data,
-  })
-
-  fetchUser({
-    url: login ? '/users/login' : '/users',
-    data: user,
-  })
-    .then((res) => {
-      localStorage.setItem('user', JSON.stringify(res.data.user))
-      dispatch(setUser({ user: res.data.user }))
-      dispatch(setErrors(null))
-    })
-    .catch((err) => {
-      if (err.response.status === 422) {
-        dispatch(setUser(JSON.parse(user)))
-      } else {
-        dispatch(setErrors('login ошибка'))
-      }
+        
     })
 }
 
@@ -95,7 +74,7 @@ export const updateUser = (data) => async (dispatch) => {
       localStorage.setItem('user', JSON.stringify(res.data.user))
       dispatch(setUser({ user: res.data.user }))
     })
-    .catch(() => {
-      dispatch(setErrors('update ошибка'))
+    .catch((err) => {
+      dispatch(setErrors(err.response.data.errors))
     })
 }

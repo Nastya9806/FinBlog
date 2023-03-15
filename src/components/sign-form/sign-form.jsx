@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Paper, TextField, Typography } from '@mui/material'
 
 import { registerUser } from '../../services/userState'
@@ -28,6 +28,7 @@ const SignForm = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const servErr = useSelector((state) => state.user.errors)
 
   const onSubmit = (data) => {
     dispatch(registerUser(data, true))
@@ -73,6 +74,9 @@ const SignForm = () => {
                 setValue('email', watch('email').toLowerCase())
               }}
             />
+            {servErr?.email && (
+              <Typography sx={{ color: 'red', fontSize: '12px', p: '0px' }}>{servErr?.email}</Typography>
+            )}
 
             <Typography>Password</Typography>
             <TextField
