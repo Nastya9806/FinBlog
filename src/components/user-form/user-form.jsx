@@ -1,17 +1,16 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { Box, Button, Checkbox, Divider, FormControlLabel, Paper, TextField, Typography } from '@mui/material';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { Box, Button, Checkbox, Divider, FormControlLabel, Paper, TextField, Typography } from '@mui/material'
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
 import { registerUser, updateUser } from '../../services/userState'
 
-
-const UserForm = ({signUp, user}) => {
-
-  const formTitle = signUp ? 'Create new account' : 'Edit Profile';
-  const buttonLabel = signUp ? 'Create' : 'Save';
+const UserForm = ({ signUp, user }) => {
+  const formTitle = signUp ? 'Create new account' : 'Edit Profile'
+  const buttonLabel = signUp ? 'Create' : 'Save'
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -27,9 +26,9 @@ const UserForm = ({signUp, user}) => {
       .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
     acceptPersonalInf: Yup.bool().oneOf([true], 'Предоставьте согласие на обработку персональных данных'),
     avatarUrl: Yup.string().url('Введите корректный URL'),
-  });
+  })
 
-  const { 
+  const {
     register,
     formState: { errors },
     handleSubmit,
@@ -40,157 +39,156 @@ const UserForm = ({signUp, user}) => {
     },
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
-  });
+  })
 
-
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const onSubmit = (data) => {
-    signUp ?
-    dispatch(registerUser(data, false))
-    : dispatch(updateUser(data))
+    signUp ? dispatch(registerUser(data, false)) : dispatch(updateUser(data))
     navigate('/articles')
   }
 
   return (
-    <Box
-      sx={{
-        m: 'auto',
-        mt: 10,
-        maxWidth: 384,
-      }}
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Paper
-          sx={{
-            p: 5,
-          }}
-        >
-          <Typography
-            variant="h6"
-            justify="center"
-            align="center"
+    <>
+      <Box
+        sx={{
+          m: 'auto',
+          mt: 10,
+          maxWidth: 384,
+        }}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Paper
             sx={{
-              mb: 1,
+              p: 5,
             }}
           >
-            {formTitle}
-          </Typography>
+            <Typography
+              variant="h6"
+              justify="center"
+              align="center"
+              sx={{
+                mb: 1,
+              }}
+            >
+              {formTitle}
+            </Typography>
 
-          <TextField
-            id="username"
-            label="User name"
-            variant="outlined"
-            size="small"
-            fullWidth
-            sx={{
-              mb: 1,
-            }}
-            {...register('username')}
-            error={!!errors?.username}
-            helperText={errors?.username?.message}
-          />
-
-          <TextField
-            id="email"
-            type="email"
-            variant="outlined"
-            label="Email address"
-            size="small"
-            fullWidth
-            sx={{
-              mb: 1,
-            }}
-            {...register('email')}
-            error={!!errors?.email}
-            helperText={errors?.email?.message}
-          />
-
-          <TextField
-            id="password"
-            label="password"
-            type="password"
-            variant="outlined"
-            size="small"
-            fullWidth
-            sx={{
-              mb: 1,
-            }}
-            {...register('password')}
-            error={!!errors?.password}
-            helperText={errors?.password?.message}
-          />
-
-          <TextField
-            id="confirmPassword"
-            label="Repeat password"
-            type="password"
-            size="small"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-            {...register('confirmPassword')}
-            error={!!errors?.confirmPassword}
-            helperText={errors?.confirmPassword?.message}
-          />
-
-          {!signUp && (
             <TextField
-              id="avatarUrl"
-              type="url"
-              label="Avatar image (url)"
+              id="username"
+              label="User name"
               variant="outlined"
+              size="small"
+              fullWidth
+              sx={{
+                mb: 1,
+              }}
+              {...register('username')}
+              error={!!errors?.username}
+              helperText={errors?.username?.message}
+            />
+
+            <TextField
+              id="email"
+              type="email"
+              variant="outlined"
+              label="Email address"
+              size="small"
+              fullWidth
+              sx={{
+                mb: 1,
+              }}
+              {...register('email')}
+              error={!!errors?.email}
+              helperText={errors?.email?.message}
+            />
+
+            <TextField
+              id="password"
+              label="password"
+              type="password"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{
+                mb: 1,
+              }}
+              {...register('password')}
+              error={!!errors?.password}
+              helperText={errors?.password?.message}
+            />
+
+            <TextField
+              id="confirmPassword"
+              label="Repeat password"
+              type="password"
               size="small"
               fullWidth
               sx={{
                 mb: 2,
               }}
-              {...register('avatarUrl')}
-              error={!!errors?.avatarUrl}
-              helperText={errors?.avatarUrl?.message}
+              {...register('confirmPassword')}
+              error={!!errors?.confirmPassword}
+              helperText={errors?.confirmPassword?.message}
             />
-           )}
-          {signUp && (
-            <>
-              <Divider
+
+            {!signUp && (
+              <TextField
+                id="avatarUrl"
+                type="url"
+                label="Avatar image (url)"
+                variant="outlined"
+                size="small"
+                fullWidth
                 sx={{
-                  mb: 1,
+                  mb: 2,
                 }}
+                {...register('avatarUrl')}
+                error={!!errors?.avatarUrl}
+                helperText={errors?.avatarUrl?.message}
               />
-
-              <FormControlLabel
-                control={<Checkbox {...register('acceptPersonalInf')} />}
-                label="I agree to the processing of my personal information"
-              />
-              {!!errors?.acceptPersonalInf && (
-                <Typography variant="caption" display="block" gutterBottom sx={{ color: 'red' }}>
-                  {errors?.acceptPersonalInf?.message}
-                </Typography>
-              )}
-            </>
-            )} 
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{
-              my: 2,
-            }}
-          >
-            {buttonLabel}
-          </Button>
-
-          {signUp && (
-            <Typography variant="body2" justify="center" align="center">
-              Already have an account? <Link to="/sign-in">Sign In.</Link>
-            </Typography>
             )}
-        </Paper>
-      </form>
-    </Box>
-  );
-};
+            {signUp && (
+              <>
+                <Divider
+                  sx={{
+                    mb: 1,
+                  }}
+                />
 
-export default UserForm;
+                <FormControlLabel
+                  control={<Checkbox {...register('acceptPersonalInf')} />}
+                  label="I agree to the processing of my personal information"
+                />
+                {!!errors?.acceptPersonalInf && (
+                  <Typography variant="caption" display="block" gutterBottom sx={{ color: 'red' }}>
+                    {errors?.acceptPersonalInf?.message}
+                  </Typography>
+                )}
+              </>
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{
+                my: 2,
+              }}
+            >
+              {buttonLabel}
+            </Button>
+
+            {signUp && (
+              <Typography variant="body2" justify="center" align="center">
+                Already have an account? <Link to="/sign-in">Sign In.</Link>
+              </Typography>
+            )}
+          </Paper>
+        </form>
+      </Box>
+    </>
+  )
+}
+
+export default UserForm

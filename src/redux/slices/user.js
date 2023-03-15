@@ -13,10 +13,8 @@ const defaultUnregistered = {
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    user: JSON.parse(localStorage.getItem('user'))
-      ? JSON.parse(localStorage.getItem('user'))
-      : defaultUnregistered,
-    errors: null,
+    user: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : defaultUnregistered,
+    errors: '',
     id: uuidv4(),
   },
   reducers: {
