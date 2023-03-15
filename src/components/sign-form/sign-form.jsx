@@ -32,7 +32,9 @@ const SignForm = () => {
 
   const onSubmit = (data) => {
     dispatch(registerUser(data, true))
-    navigate('/')
+    if (!servErr) {
+      navigate('/')
+    }
   }
 
   return (

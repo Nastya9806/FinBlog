@@ -45,7 +45,9 @@ const UserForm = ({ signUp, user }) => {
   const navigate = useNavigate()
   const onSubmit = (data) => {
     signUp ? dispatch(registerUser(data, false)) : dispatch(updateUser(data))
-    navigate('/')
+    if (!servErr) {
+      navigate('/')
+    }
   }
   return (
     <>
