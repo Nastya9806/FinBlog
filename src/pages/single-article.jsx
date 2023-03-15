@@ -7,16 +7,12 @@ import { Box, Typography, Paper } from '@mui/material'
 import ArticleCard from '../components/article-card'
 import Spin from '../UI/spin/spin'
 import ErrorDetected from '../UI/error'
-// import {setGoTo} from '../redux/slices/user'
 
 const SingleArticle = () => {
   const { slug } = useParams()
-  // const dispatch = useDispatch()
   const { loadingData } = useSelector((state) => state.articles)
   const { articles } = useSelector((state) => state.articles)
   const article = articles.find((item) => item.slug === slug)
-
-  // const { location } = useSelector((state) => state.user)
 
   const isLoading = (load) => {
     if (load === 'loading') {
