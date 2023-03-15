@@ -14,6 +14,9 @@ const userSlice = createSlice({
   initialState: {
     user: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : defaultUnregistered,
     errors: null,
+    done: false,
+    home: false,
+    location: 'articles-list',
   },
   reducers: {
     logOut(state) {
@@ -27,8 +30,11 @@ const userSlice = createSlice({
     setErrors(state, action) {
       state.errors = action.payload
     },
+    setDone(state, action){
+      state.done = action.payload
+    },
   },
 })
 
 export default userSlice.reducer
-export const { setUser, setErrors, logOut } = userSlice.actions
+export const { setUser, setErrors, logOut, setDone } = userSlice.actions

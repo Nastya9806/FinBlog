@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { setErrors, setUser } from '../redux/slices/user'
+import { setErrors, setUser, setDone } from '../redux/slices/user'
 
 const baseUrl = 'https://blog.kata.academy/api'
 
@@ -28,9 +28,12 @@ export const getUser = (token) => async (dispatch) => {
       localStorage.setItem('user', JSON.stringify(res.data.user))
       dispatch(setUser({ user: res.data.user }))
       dispatch(setErrors(null))
+      dispatch(setDone(true))
+
     })
     .catch((err) => {
       dispatch(setErrors(err.response.data.errors))
+      dispatch(setDone(false))
     })
 }
 
@@ -46,12 +49,13 @@ export const registerUser = (data, login) => async (dispatch) => {
     .then((res) => {
       localStorage.setItem('user', JSON.stringify(res.data.user))
       dispatch(setUser({ user: res.data.user }))
+      dispatch(setDone(true))
     })
     .catch((err) => {
       if (err?.response?.status === 422) {
         dispatch(setUser(JSON.parse(user)))
         dispatch(setErrors(err.response.data.errors))
-      
+        dispatch(setDone(false))
       }
         
     })
@@ -73,8 +77,10 @@ export const updateUser = (data) => async (dispatch) => {
     .then((res) => {
       localStorage.setItem('user', JSON.stringify(res.data.user))
       dispatch(setUser({ user: res.data.user }))
+      dispatch(setDone(true))
     })
     .catch((err) => {
       dispatch(setErrors(err.response.data.errors))
+      dispatch(setDone(false))
     })
 }

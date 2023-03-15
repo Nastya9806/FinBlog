@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as Yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Paper, TextField, Typography } from '@mui/material'
 
 import { registerUser } from '../../services/userState'
+import { setDone } from '../../redux/slices/user'
 
-const SignForm = () => {
+const SignForm = ({ token }) => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
     password: Yup.string()
@@ -27,15 +28,19 @@ const SignForm = () => {
   })
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const servErr = useSelector((state) => state.user.errors)
 
   const onSubmit = (data) => {
     dispatch(registerUser(data, true))
-    if (!servErr) {
-      navigate('/')
-    }
+    dispatch(setDone)
   }
+
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (token) {
+      navigate('/articles')
+    }
+  }, [token])
 
   return (
     <>
@@ -71,14 +76,17 @@ const SignForm = () => {
               }}
               {...register('email')}
               error={!!errors?.email}
+              message="чет не так"
               helperText={errors?.email?.message}
               onKeyUp={() => {
                 setValue('email', watch('email').toLowerCase())
               }}
             />
-            {servErr?.email && (
-              <Typography sx={{ color: 'red', fontSize: '12px', p: '0px' }}>{servErr?.email}</Typography>
-            )}
+            {servErr ? (
+              <Typography sx={{ color: 'red', fontSize: '12px', p: '0px' }}>{`${Object.keys(servErr)} ${Object.values(
+                servErr
+              )}`}</Typography>
+            ) : null}
 
             <Typography>Password</Typography>
             <TextField
@@ -94,7 +102,6 @@ const SignForm = () => {
               error={!!errors?.password}
               helperText={errors?.password?.message}
             />
-
             <Button
               type="submit"
               variant="contained"
@@ -105,6 +112,18 @@ const SignForm = () => {
             >
               Login
             </Button>
+            {/* <Link to={res} style={{ textDecoration: 'none' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  mb: 2,
+                }}
+              >
+              Login
+              </Button>
+            </Link> */}
 
             <Typography variant="body2" justify="center" align="center">
               Don’t have an account? <Link to="/sign-up">Sign Up</Link>.

@@ -30,7 +30,7 @@ function ArticleCard({ post, singlePage }) {
         <Grid item xs={10} sx={{ width: '682px', wordWrap: 'break-word' }}>
           <Grid container direction="row" justifyContent="flex-start" alignItems="center">
             <Link to={`/articles/${post.slug}`} style={{ textDecoration: 'none' }}>
-              <Typography variant="h5" color="#1890FF" sx={{ mr: '5px' }}>
+              <Typography variant="h5" color="#1890FF" sx={{ mr: '5px', pr: '20px', wordBreak: 'break-word' }}>
                 {(!singlePage && cutTitle(post.title)) || post.title}
               </Typography>
             </Link>

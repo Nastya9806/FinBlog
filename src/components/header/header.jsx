@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { AppBar, Button, Toolbar, Typography, Avatar } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { logOut } from '../../redux/slices/user'
+import { logOut, setDone } from '../../redux/slices/user'
 import { getUser } from '../../services/userState'
 
 const Header = () => {
@@ -12,6 +12,7 @@ const Header = () => {
   const avatar = user.image ? user.image : null
   const onLogOut = () => {
     localStorage.removeItem('user')
+    dispatch(setDone(false))
     dispatch(logOut())
   }
 

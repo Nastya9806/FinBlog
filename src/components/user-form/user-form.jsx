@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { registerUser, updateUser } from '../../services/userState'
+import { setErrors } from '../../redux/slices/user'
 
 const UserForm = ({ signUp, user }) => {
   const formTitle = signUp ? 'Create new account' : 'Edit Profile'
@@ -40,15 +41,20 @@ const UserForm = ({ signUp, user }) => {
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   })
-
+  const isDone = useSelector((state) => state.user.done)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const onSubmit = (data) => {
     signUp ? dispatch(registerUser(data, false)) : dispatch(updateUser(data))
-    if (!servErr) {
-      navigate('/')
-    }
   }
+
+  const navigate = useNavigate()
+  useEffect(() => {
+    dispatch(setErrors(null))
+    if (signUp && isDone) {
+      navigate('/articles')
+    }
+  }, [dispatch, isDone, signUp])
+
   return (
     <>
       <Box
@@ -176,6 +182,20 @@ const UserForm = ({ signUp, user }) => {
               </>
             )}
 
+            {errors || servErr ? null : (
+              <Link to="/articles" style={{ textDecoration: 'none' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    my: 2,
+                  }}
+                >
+                  {buttonLabel}
+                </Button>
+              </Link>
+            )}
             <Button
               type="submit"
               variant="contained"
