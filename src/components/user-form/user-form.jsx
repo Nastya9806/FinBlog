@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Box, Button, Checkbox, Divider, FormControlLabel, Paper, TextField, Typography } from '@mui/material';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { registerUser, updateUser } from '../services/userState'
+import { registerUser, updateUser } from '../../services/userState'
 
 
 const UserForm = ({signUp, user}) => {

@@ -8,7 +8,7 @@ const articlesSlice = createSlice({
         articlesCount: 0,
         currPage: 1,
         limit: 5,
-        loading: '',
+        loadingData: '',
     },
 
     reducers: {
@@ -16,7 +16,7 @@ const articlesSlice = createSlice({
             state.articles = action.payload;
           },
         setLoading(state, action) {
-          state.loading = action.payload;
+          state.loadingData = action.payload;
         },
         addArticle(state, action) {
             state.articles = [action.payload]

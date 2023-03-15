@@ -1,17 +1,8 @@
 import axios from "axios";
-import {addArticles, addArticlesCount, setArticle, setLoading, setLiked} from '../redux/articles'
-import React from "react";
+import {addArticles, addArticlesCount, setArticle, setLoading, setLiked} from '../redux/slices/articles'
 import {format} from "date-fns";
-import {cutDescription} from '../utilities/format'
-import { setStatus, goHome, setSubmit, setGoTo } from '../redux/status'
 
 const baseUrl = 'https://blog.kata.academy';
-// const tagQuery = '';
-const tag = '' ? `&tag=${''}` : '';
-const authorQuery = '';
-const author = authorQuery ? `&author=${authorQuery}` : '';
-const favQuery = '';
-const favorited = favQuery ? `&favorited=${favQuery}` : '';
 
 const getHeaders = (token) => ({
   'Content-Type': 'application/json',
@@ -39,21 +30,18 @@ const getArticleItem = (article) => {
   };
 };
 
-
 export const fetchArticles = (page, limit, token = '') => async (dispatch) => {
-  axios(`${baseUrl}/api/articles?${tag}${author}${favorited}&limit=${limit}&offset=${(page - 1) * limit}`, {headers: getHeaders(token)})
+  axios(`${baseUrl}/api/articles?limit=${limit}&offset=${(page - 1) * limit}`, {headers: getHeaders(token)})
   .then((res) => res.data)
     .then((data) => {
       if (data.articles.length !== 0) {
         dispatch(setLoading('done'))
-        // dispatch(setStatus('ok'))
         dispatch(addArticles(getArticleItems(data.articles)));
         dispatch(addArticlesCount(data.articlesCount));
-      } else {
-        console.log('что такое')
-      }
+      } 
     })
-    .catch((err) => {
+    .catch(() => {
+      console.log('тут ашыпка')
       dispatch(setLoading('error'))
     });
 };
@@ -120,6 +108,5 @@ export const setLike = (token, slug, liked) => async (dispatch) =>
     })
     .catch(() => {
       dispatch(setLoading('error'))
-      // dispatch(setStatus('error'))
     })
 

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import SignInForm from '../../pages/sign-in-form'
+import SignForm from '../components/sign-form/sign-form'
 
 const SignIn = () => {
   return (
     <>
-      <SignInForm />;
+      <SignForm />;
     </>
   );
 };

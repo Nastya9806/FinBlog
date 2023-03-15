@@ -1,18 +1,18 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom'
 import ArticleList from '../../pages/list-article';
-// import classes from './app.module.scss';
 import Layout from '../layout/layout'
 import SingleArticle from '../../pages/single-article';
-import SignIn from '../sign-in-form/sign-in'
-import SignUp from '../sign-up-form/sign-up'
+import SignIn from '../../pages/sign-in'
+import SignUp from '../../pages/sign-up'
 import ArticleForm from '../../pages/article-form'
-import EditProfile from '../edit-profile/edit-profile'
-import UserForm from '../../pages/user-form'
+import EditProfile from '../user-form/user-form'
+import ErrorDetected from '../../UI/error/error'
 
 const App = () => {
+
   return ( 
-    <div > 
+    <div> 
       <Routes>
         <Route path="/" element={<Layout />}>
         <Route index element={<ArticleList />} />
@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/profile" element={<EditProfile />} />
         {/* <Route path="/profile" element={<UserForm />} /> */}
         <Route path="/articles/:slug/edit" element={<ArticleForm />} />
+        <Route path="*" element={<ErrorDetected/>} />
     </Route>
     </Routes>
     </div>

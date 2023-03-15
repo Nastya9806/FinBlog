@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { editArticle } from '../services/kata'
-import { setErrors } from '../redux/user'
-import { setSubmit } from '../redux/status'
+import { setErrors } from '../redux/slices/user'
 import { useParams, useNavigate } from 'react-router-dom';
 
  

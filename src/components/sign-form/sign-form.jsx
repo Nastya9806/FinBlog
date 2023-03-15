@@ -1,17 +1,14 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
-import { registerUser } from '../services/userState'
-// import { setErrors } from '../redux/user'
-// import signUp from '../sign-up/sign-up.module.scss'
-import { setSubmit } from '../redux/status'
+import { registerUser } from '../../services/userState'
 
 
-const SignInForm = () => {
+const SignForm = () => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
     password: Yup.string()
@@ -33,7 +30,6 @@ const SignInForm = () => {
   const navigate = useNavigate()
 
   const onSubmit = (data) => {
-    // dispatch(setSubmit(false))
     dispatch(registerUser(data, true))
     navigate('/')
   }
@@ -114,4 +110,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignForm;

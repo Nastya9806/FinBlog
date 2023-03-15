@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Button, Toolbar, Typography, Avatar } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../../redux/user'
+import { logOut } from '../../redux/slices/user'
 import { getUser } from '../../services/userState'
 
 const Header = () => {

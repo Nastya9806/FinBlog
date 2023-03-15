@@ -1,13 +1,10 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import articlesSlice from './articles'
-import userSlice from "./user";
-import statusSlice from './status'
+import articlesSlice from './slices/articles'
+import userSlice from "./slices/user";
 
 const rootReducer = combineReducers({
   articles: articlesSlice,
   user: userSlice,
-  status: statusSlice,
-
 })
 
 const store = configureStore({

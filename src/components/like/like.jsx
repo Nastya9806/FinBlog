@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Checkbox } from '@mui/material'
 import { FavoriteBorder, Favorite} from '@mui/icons-material';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import {setLoading} from '../../redux/articles'
+import {setLoading} from '../../redux/slices/articles'
+import Spin from '../../UI/spin/spin'
 
 function Like({ token, post }) {
     const [favoriteCount, setFavoriteCount] = useState(post.favoritesCount);
@@ -25,7 +25,7 @@ function Like({ token, post }) {
       setFavoriteCount(favoriteCount + 1)  
       }, [onLike])
 
-    const {loading} = useSelector(state => state.articles);
+    const {loadingData} = useSelector(state => state.articles);
 
     const likeBox = (<Box>
       <Checkbox 
@@ -36,14 +36,9 @@ function Like({ token, post }) {
       onChange={onLike} />
     </Box>)
 
-const spin = <Box sx={{ display: 'flex', width: '100%', height: '100vh' }}>
-<CircularProgress sx={{margin: '50px auto'}} />
-</Box>
-
-
-    const isLoading = (load) => {
+  const isLoading = (load) => {
       if(load !== 'done'){
-        return spin && likeBox
+        return <Spin /> && likeBox
       } else{
         return likeBox
       }
@@ -51,17 +46,9 @@ const spin = <Box sx={{ display: 'flex', width: '100%', height: '100vh' }}>
 
 
     
-    const showContent = isLoading(loading)
+    const showContent = isLoading(loadingData)
   
     return(
-      //   <Box>
-      //   <Checkbox 
-      //   icon={<FavoriteBorder />} 
-      //   disabled={!token}
-      //   checked={isCheckedStorage} 
-      //   checkedIcon={<Favorite sx={{ color: 'red' }} />} 
-      //   onChange={onLike} />
-      // </Box>
       <>
       {showContent}
       </>

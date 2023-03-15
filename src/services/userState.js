@@ -1,7 +1,5 @@
 import axios from 'axios'
-import { setErrors, setUser } from '../redux/user'
-import { goHome, setSubmit } from '../redux/status'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { setErrors, setUser } from '../redux/slices/user'
 
 const baseUrl = 'https://blog.kata.academy/api'
 

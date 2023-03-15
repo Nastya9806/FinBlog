@@ -6,15 +6,12 @@ import {fetchArticles} from '../services/kata'
 import { v4 as uuidv4 } from 'uuid'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import {setPage, setLoading, resetArticles} from '../redux/articles'
-import {setStatus, setLocation, goHome} from '../redux/status'
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import {setPage, setLoading } from '../redux/slices/articles'
+import Spin from '../UI/spin/spin'
 
 const ArticleList = () => {
   const dispatch = useDispatch();
-  const {articles, currPage, limit, articlesCount, loading} = useSelector(state => state.articles);
-  const status = useSelector((state) => state.status.status)
+  const {articles, currPage, limit, articlesCount, loadingData} = useSelector(state => state.articles);
   const handleChangePage = (pageNumber) => {
     dispatch(setPage(pageNumber))
   }
@@ -29,19 +26,15 @@ const ArticleList = () => {
     return <ArticleCard key={uuidv4()} post={post} />
    })
 
-  const spin = <Box sx={{ display: 'flex', width: '100%', height: '100vh' }}>
-  <CircularProgress sx={{margin: '50px auto'}} />
-</Box>
-
 const isLoading = (load) => {
-  if(load !== 'done'){
-    return spin
-  } else{
+  if(load !== 'done' && load !== 'error'){
+    return <Spin />
+  } else if(load === 'done'){
     return posts
-  }
+  } 
 }
 
-const showContent = isLoading(loading)
+const showContent = isLoading(loadingData)
 
   return ( 
     <>
