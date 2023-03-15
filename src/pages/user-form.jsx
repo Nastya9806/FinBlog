@@ -1,16 +1,14 @@
-import React, {useEffect} from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Box, Button, Checkbox, Divider, FormControlLabel, Paper, TextField, Typography } from '@mui/material';
-
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerUser, updateUser } from '../services/userState'
-import { setErrors } from '../redux/user'
-import { setSubmit } from '../redux/status'
 
-const UserForm = ({signUp}) => {
+
+const UserForm = ({signUp, user}) => {
 
   const formTitle = signUp ? 'Create new account' : 'Edit Profile';
   const buttonLabel = signUp ? 'Create' : 'Save';
@@ -31,32 +29,28 @@ const UserForm = ({signUp}) => {
     avatarUrl: Yup.string().url('Введите корректный URL'),
   });
 
-  const {
+  const { 
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({
+    defaultValues: {
+      username: user?.username,
+      email: user?.email,
+    },
     mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
 
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const onSubmit = (data) => {
-    signUp ? dispatch(setSubmit(false)) &&
+    signUp ?
     dispatch(registerUser(data, false))
     : dispatch(updateUser(data))
+    navigate('/articles')
   }
-
-  const navigate = useNavigate();
-  const home = useSelector((state) => state.status.home)
-  useEffect(() => {
-    dispatch(setErrors(null))
-    if (home) navigate('/')
-  }, [home, dispatch, navigate])
-
-  const { submitActive } = useSelector((state) => state.status)
 
   return (
     <Box

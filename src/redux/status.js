@@ -10,21 +10,21 @@ const statusSlice = createSlice({
     goTo: '',
   },
   reducers: {
-    setGoTo(state, action) {
-      state.goTo = action.payload
-    },
-    setSubmit(state, action) {
-      state.submitActive = action.payload
-    },
+    // setGoTo(state, action) {
+    //   state.goTo = action.payload
+    // },
+    // setSubmit(state, action) {
+    //   state.submitActive = action.payload
+    // },
     setStatus(state, action) {
       state.status = action.payload
     },
-    setLocation(state, action) {
-      state.location = action.payload
-    },
-    goHome(state, action) {
-      state.home = action.payload
-    },
+    // setLocation(state, action) {
+    //   state.location = action.payload
+    // },
+    // goHome(state, action) {
+    //   state.home = action.payload
+    // },
   },
 })
 

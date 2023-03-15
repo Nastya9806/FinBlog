@@ -1,5 +1,5 @@
 import axios from "axios";
-import {addArticles, addArticlesCount, setArticle, setLiked} from '../redux/articles'
+import {addArticles, addArticlesCount, setArticle, setLoading, setLiked} from '../redux/articles'
 import React from "react";
 import {format} from "date-fns";
 import {cutDescription} from '../utilities/format'
@@ -19,27 +19,15 @@ const getHeaders = (token) => ({
 })
 
 const getArticleItems = (articles) => articles.map((article) => {
-  return {
-    slug: article.slug,
-    headerTitle: cutDescription(article.title, 40),
-    title: article.title,
-    likes: article.favoritesCount,
-    tags: article.tagList,
-    description: article.description,
-    username: article.author.username, 
-    updatedDate: format(new Date(article.updatedAt), "MMMM d, yyyy"),
-    avatarPath: article.author.image,
-    text: article.body,
-    liked: article.favorited,
-  };
+  console.log(article)
+ return getArticleItem(article)
+
 });
 
 const getArticleItem = (article) => {
   return {
     slug: article.slug,
     title: article.title,
-    // headerTitle: cutDescription(article.title, 40),
-    headerTitle: cutDescription(article.title, 40),
     likes: article.favoritesCount,
     tags: article.tagList,
     text: article.body,
@@ -57,8 +45,8 @@ export const fetchArticles = (page, limit, token = '') => async (dispatch) => {
   .then((res) => res.data)
     .then((data) => {
       if (data.articles.length !== 0) {
-        // dispatch(setLoading(false))
-        dispatch(setStatus('ok'))
+        dispatch(setLoading('done'))
+        // dispatch(setStatus('ok'))
         dispatch(addArticles(getArticleItems(data.articles)));
         dispatch(addArticlesCount(data.articlesCount));
       } else {
@@ -66,7 +54,7 @@ export const fetchArticles = (page, limit, token = '') => async (dispatch) => {
       }
     })
     .catch((err) => {
-      console.log("err Code>", err.code, err);
+      dispatch(setLoading('error'))
     });
 };
 
@@ -75,12 +63,11 @@ export const fetchArticle = (slug) => async (dispatch) => {
   axios(`${baseUrl}/api/articles/${slug}`)
     .then((res) => res.data)
     .then((data) => {
-      console.log(data.article)
-      dispatch(setStatus('ok'))
-      // console.log(data.article)
+      dispatch(setLoading('done'))
       dispatch(setArticle(getArticleItem(data.article)));
-    //   сверху было getArticleItem, я добавила s -- нужно его удалить, если что
-    });
+    }).catch(() => {
+      dispatch(setLoading('error'))
+    })
 }; 
 
 
@@ -93,21 +80,17 @@ export const editArticle = (data, tags, token, slug) => async (dispatch) => {
     tagList: tags 
   } 
   })
-  console.log(article)
   return axios({
     url: slug ? `${baseUrl}/api/articles/${slug}` : `${baseUrl}/api/articles`,
     method: slug ? 'put' : 'post',
     headers: getHeaders(token),
     data: article,
   })
-    .then((res) => {
-      dispatch(setStatus('ok'))
-      dispatch(setGoTo(res.data.article.slug))
-      dispatch(setSubmit(true))
+    .then(() => {
+      dispatch(setLoading('done'))
     })
     .catch(() => {
-      dispatch(setSubmit(true))
-      dispatch(setStatus('error'))
+      dispatch(setLoading('error'))
     })
 }
 
@@ -119,13 +102,10 @@ export const deleteArticle = (token, slug) => async (dispatch) =>
   })
     .then((res) => res.data)
     .then(() => {
-      dispatch(setStatus('ok'))
-      // dispatch(goHome(true))
-      dispatch(setSubmit(true))
+      dispatch(setLoading('done'))
     })
     .catch(() => {
-      dispatch(setSubmit(true))
-      dispatch(setStatus('error'))
+      dispatch(setLoading('error'))
     })
 
 export const setLike = (token, slug, liked) => async (dispatch) =>
@@ -135,11 +115,11 @@ export const setLike = (token, slug, liked) => async (dispatch) =>
     headers: getHeaders(token),
   })
     .then((res) => {
-      dispatch(setStatus('ok'))
+      dispatch(setLoading('done'))
       dispatch(setLiked(getArticleItem(res.data.article)))
     })
     .catch(() => {
-      dispatch(setSubmit(true))
-      dispatch(setStatus('error'))
+      dispatch(setLoading('error'))
+      // dispatch(setStatus('error'))
     })
 

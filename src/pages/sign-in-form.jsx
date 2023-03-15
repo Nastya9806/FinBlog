@@ -33,7 +33,7 @@ const SignInForm = () => {
   const navigate = useNavigate()
 
   const onSubmit = (data) => {
-    dispatch(setSubmit(false))
+    // dispatch(setSubmit(false))
     dispatch(registerUser(data, true))
     navigate('/')
   }

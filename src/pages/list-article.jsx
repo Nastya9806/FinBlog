@@ -21,9 +21,7 @@ const ArticleList = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    // dispatch(goHome(false))
-    dispatch(setLocation('articles-list'))
-    dispatch(setStatus('loading'))
+    dispatch(setLoading('loading'))
     dispatch(fetchArticles(currPage, limit))
   }, [dispatch, currPage]);
 
@@ -36,14 +34,14 @@ const ArticleList = () => {
 </Box>
 
 const isLoading = (load) => {
-  if(load === 'loading'){
+  if(load !== 'done'){
     return spin
   } else{
     return posts
   }
 }
 
-const showContent = isLoading(status)
+const showContent = isLoading(loading)
 
   return ( 
     <>

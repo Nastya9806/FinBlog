@@ -49,12 +49,9 @@ export const registerUser = (data, login) => async (dispatch) => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         dispatch(setUser({ user: res.data.user }))
         dispatch(setErrors(null))
-        // dispatch(goHome(true))
-        dispatch(setSubmit(true))
       })
       .catch((err) => {
         if (err?.response?.status === 422) {
-          dispatch(setSubmit(true))
           dispatch(setUser(JSON.parse(user)))
           dispatch(setErrors(err.response.data.errors))
         }
@@ -74,11 +71,8 @@ export const registerUser = (data, login) => async (dispatch) => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         dispatch(setUser({ user: res.data.user }))
         dispatch(setErrors(null))
-        // dispatch(goHome(true))
-        dispatch(setSubmit(true))
       })
       .catch((err) => {
-        dispatch(setSubmit(true))
         if (err.response.status === 422) {
           dispatch(setUser(JSON.parse(user)))
           dispatch(setErrors(err.response.data.errors))
@@ -103,10 +97,8 @@ export const registerUser = (data, login) => async (dispatch) => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         dispatch(setUser({ user: res.data.user }))
         dispatch(setErrors(null))
-        dispatch(setSubmit(true))
       })
       .catch((err) => {
-        dispatch(setSubmit(true))
         dispatch(setErrors(err.response.data.errors))
       })
   }

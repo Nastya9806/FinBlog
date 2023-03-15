@@ -20,18 +20,18 @@ function ArticleCard({post, singlePage}) {
   const onDelete = () => {
     dispatch(deleteArticle(token, slug))
     navigate('/')
-    // navigate('/', { replace: true })  
 }
 
+
 const editLink = `/articles/${slug}/edit`
-    return ( 
+    return (  
       <ListItem sx={{height: '140px', cursor: 'pointer', backgroundColor: 'white', cursor: 'pointer', mt: 2 }}>
       <Grid container columnSpacing={2} sx={{height: '100%', justifyContent: 'space-between'}}>
         <Grid item xs={10} sx={{width: '682px', wordWrap: 'break-word'}}>
           <Grid container direction="row" justifyContent="flex-start" alignItems="center">
           <Link to={`/articles/${post.slug}`} style={{ textDecoration: 'none' }}>
             <Typography variant="h5" color="#1890FF" sx={{ mr: '5px' }}>
-              {cutTitle(post.headerTitle)}
+              {!singlePage && cutTitle(post.title) || post.title}
             </Typography>
             </Link>
             <Like key={uuidv4()} user={user} token={token} post={post}/>

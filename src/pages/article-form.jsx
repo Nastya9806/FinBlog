@@ -13,6 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom';
  
 
 const ArticleForm = () => {
+
     const { slug } = useParams()
     const { articles } = useSelector((state) => state.articles)
     const article = articles.find((item) => item.slug === slug)
@@ -46,8 +47,8 @@ const { token, username } = useSelector((state) => state.user.user)
 
 
 const onSubmit = (data) => {
-  dispatch(setSubmit(false))
   slug ? dispatch(editArticle(data, tagList, token, slug)) : dispatch(editArticle(data, tagList, token))
+navigate('/articles')
 }
 
   useEffect(() => {

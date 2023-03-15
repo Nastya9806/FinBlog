@@ -8,7 +8,7 @@ const articlesSlice = createSlice({
         articlesCount: 0,
         currPage: 1,
         limit: 5,
-        loading: true,
+        loading: '',
     },
 
     reducers: {
@@ -31,6 +31,10 @@ const articlesSlice = createSlice({
             state.limit = action.payload;
           },
         setArticle(state, action) {
+            state.article = action.payload;
+            console.log(state.article)
+          },
+          resetArticles(state, action) {
             state.article = action.payload;
           },
         setLiked(state, action) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import ArticleList from '../../pages/list-article';
 // import classes from './app.module.scss';
 import Layout from '../layout/layout'
@@ -8,9 +8,10 @@ import SignIn from '../sign-in-form/sign-in'
 import SignUp from '../sign-up-form/sign-up'
 import ArticleForm from '../../pages/article-form'
 import EditProfile from '../edit-profile/edit-profile'
+import UserForm from '../../pages/user-form'
 
 const App = () => {
-  return (
+  return ( 
     <div > 
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/new-article" element={<ArticleForm />} />
         <Route path="/profile" element={<EditProfile />} />
+        {/* <Route path="/profile" element={<UserForm />} /> */}
         <Route path="/articles/:slug/edit" element={<ArticleForm />} />
     </Route>
     </Routes>
