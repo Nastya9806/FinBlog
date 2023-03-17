@@ -9,6 +9,7 @@ const articlesSlice = createSlice({
     currPage: 1,
     limit: 5,
     loadingData: '',
+    change: '',
   },
 
   reducers: {
@@ -30,9 +31,12 @@ const articlesSlice = createSlice({
     setLiked(state, action) {
       state.articles = state.articles.map((art) => (art.slug === action.payload.slug ? action.payload : art))
     },
+    setChange(state, action){
+      state.change = action.payload
+    }
   },
 })
 
 export default articlesSlice.reducer
-export const { addArticles, addArticlesCount, setPage, setLimit, setArticle, setLoading, setLiked } =
+export const { addArticles, setChange, addArticlesCount, setPage, setLimit, setArticle, setLoading, setLiked, } =
   articlesSlice.actions

@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useParams, useNavigate } from 'react-router-dom'
 
 import { editArticle } from '../services/kata'
-
+import { setChange } from '../redux/slices/articles'
 const ArticleForm = () => {
   const { slug } = useParams()
   const { articles } = useSelector((state) => state.articles)
@@ -43,6 +43,7 @@ const ArticleForm = () => {
 
   const onSubmit = (data) => {
     slug ? dispatch(editArticle(data, tagList, token, slug)) : dispatch(editArticle(data, tagList, token))
+    dispatch(setChange('list changed'))
     navigate('/articles')
   }
 

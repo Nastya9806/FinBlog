@@ -8,6 +8,7 @@ import { cutDescription, cutTitle } from '../../utilities/format'
 import ModalDelete from '../modal-delete'
 import { deleteArticle } from '../../services/kata'
 import Like from '../like'
+import { setChange } from '../../redux/slices/articles'
 
 function ArticleCard({ post, singlePage }) {
   const dispatch = useDispatch()
@@ -18,12 +19,15 @@ function ArticleCard({ post, singlePage }) {
   const closeModal = () => setModal(false)
   const openModal = () => setModal(true)
   const { token } = useSelector((state) => state.user.user)
+
   const onDelete = () => {
     dispatch(deleteArticle(token, slug))
+    dispatch(setChange('delete'))
     navigate('/articles')
   }
 
   const editLink = `/articles/${slug}/edit`
+
   return (
     <ListItem sx={{ height: '140px', backgroundColor: 'white', mt: 2 }}>
       <Grid container columnSpacing={2} sx={{ height: '100%', justifyContent: 'space-between' }}>
@@ -67,7 +71,9 @@ function ArticleCard({ post, singlePage }) {
           <Avatar variant={'square'} alt="Avatar" src={post.avatarPath} sx={{ width: 46, height: 46 }} />
           <Grid container direction="row">
             <Box>
-              <Typography variant="h6">{post.username}</Typography>
+              <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>
+                {post.username}
+              </Typography>
               <Typography variant="body2" sx={{ color: '#808080' }}>
                 {post.updatedDate}
               </Typography>
@@ -88,7 +94,6 @@ function ArticleCard({ post, singlePage }) {
                   sx={{ textTransform: 'none', maxWidth: '70px', maxHeight: '40px' }}
                   onClick={() => navigate(editLink)}
                 >
-                  {/* > */}
                   Edit
                 </Button>
               </Box>

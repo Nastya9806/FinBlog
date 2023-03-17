@@ -16,8 +16,8 @@ const userSlice = createSlice({
     errors: null,
     done: false,
     home: false,
-    location: 'articles-list',
-  },
+    form: '',
+  }, 
   reducers: {
     logOut(state) {
       state.user = defaultUnregistered
@@ -33,8 +33,11 @@ const userSlice = createSlice({
     setDone(state, action){
       state.done = action.payload
     },
-  },
+    changeForm(state, action){
+      state.form = action.payload
+    }
+  }, 
 })
 
 export default userSlice.reducer
-export const { setUser, setErrors, logOut, setDone } = userSlice.actions
+export const { setUser, setErrors, logOut, setDone, changeForm } = userSlice.actions

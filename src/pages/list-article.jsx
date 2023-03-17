@@ -12,7 +12,8 @@ import Spin from '../UI/spin'
 
 const ArticleList = () => {
   const dispatch = useDispatch()
-  const { articles, currPage, limit, articlesCount, loadingData } = useSelector((state) => state.articles)
+  const { articles, currPage, limit, articlesCount, loadingData, change } = useSelector((state) => state.articles)
+
   const handleChangePage = (pageNumber) => {
     dispatch(setPage(pageNumber))
   }
@@ -23,34 +24,34 @@ const ArticleList = () => {
     dispatch(fetchArticles(currPage, limit))
   }, [dispatch, currPage])
 
-  const posts = articles.map((post) => {
-    return <ArticleCard key={uuidv4()} post={post} />
-  })
-
-  const isLoading = (load) => {
-    if (load !== 'done' && load !== 'error') {
-      return <Spin />
-    } else if (load === 'done') {
-      return posts
-    }
-  }
-
-  const showContent = isLoading(loadingData)
+  useEffect(() => {
+    dispatch(setLoading('loading'))
+    dispatch(fetchArticles(currPage, limit))
+  }, [change, dispatch])
 
   return (
     <>
-      <List spacing={2}>{showContent}</List>
-      <Stack spacing={2}>
-        <Pagination
-          sx={{ margin: '10px auto', flex: '0 0 auto' }}
-          page={currPage}
-          count={Math.ceil(articlesCount / 5)}
-          onChange={(_, num) => {
-            handleChangePage(num)
-          }}
-          color="primary"
-        />
-      </Stack>
+      {loadingData === 'loading' && <Spin />}
+      {loadingData === 'done' && (
+        <>
+          <List spacing={2}>
+            {articles.map((post) => {
+              return <ArticleCard key={uuidv4()} post={post} />
+            })}
+          </List>
+          <Stack spacing={2}>
+            <Pagination
+              sx={{ margin: '10px auto', flex: '0 0 auto' }}
+              page={currPage}
+              count={Math.ceil(articlesCount / 5)}
+              onChange={(_, num) => {
+                handleChangePage(num)
+              }}
+              color="primary"
+            />
+          </Stack>
+        </>
+      )}
     </>
   )
 }

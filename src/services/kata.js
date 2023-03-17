@@ -37,9 +37,9 @@ export const fetchArticles =
         .then((res) => res.data)
         .then((data) => {
           if (data.articles.length !== 0) {
-            dispatch(setLoading('done'))
             dispatch(addArticles(getArticleItems(data.articles)))
             dispatch(addArticlesCount(data.articlesCount))
+            dispatch(setLoading('done'))
           }
         })
         .catch(() => {
@@ -51,8 +51,8 @@ export const fetchArticle = (slug) => async (dispatch) => {
   axios(`${baseUrl}/api/articles/${slug}`)
     .then((res) => res.data)
     .then((data) => {
-      dispatch(setLoading('done'))
       dispatch(setArticle(getArticleItem(data.article)))
+      dispatch(setLoading('done'))
     })
     .catch(() => {
       dispatch(setLoading('error'))
@@ -75,6 +75,7 @@ export const editArticle = (data, tags, token, slug) => async (dispatch) => {
     headers: getHeaders(token),
     data: article,
   })
+    .then((res) => res.data)
     .then(() => {
       dispatch(setLoading('done'))
     })

@@ -7,17 +7,18 @@ import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { registerUser, updateUser } from '../../services/userState'
-import { setErrors } from '../../redux/slices/user'
+import { setErrors, changeForm } from '../../redux/slices/user'
 
 const UserForm = ({ signUp, user }) => {
   const formTitle = signUp ? 'Create new account' : 'Edit Profile'
   const buttonLabel = signUp ? 'Create' : 'Save'
   const servErr = useSelector((state) => state.user.errors)
+  const form = useSelector((state) => state.user.form)
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required('Поле "Имя пользователя" должно быть заполнено')
       .min(3, 'Имя пользователя должно содержать не менее 3 символов')
-      .max(20, 'Имя пользователя должно содержать более 20 символов'),
+      .max(15, 'Имя пользователя должно содержать более 20 символов'),
     email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
     password: Yup.string()
       .min(6, 'Поле "Password" должно содержать не менее 6 символов')
@@ -42,6 +43,7 @@ const UserForm = ({ signUp, user }) => {
     resolver: yupResolver(validationSchema),
   })
   const isDone = useSelector((state) => state.user.done)
+
   const dispatch = useDispatch()
   const onSubmit = (data) => {
     signUp ? dispatch(registerUser(data, false)) : dispatch(updateUser(data))
@@ -54,6 +56,13 @@ const UserForm = ({ signUp, user }) => {
       navigate('/articles')
     }
   }, [dispatch, isDone, signUp])
+
+  useEffect(() => {
+    if (form === 'changed' && !signUp) {
+      navigate('/articles')
+      dispatch(changeForm(''))
+    }
+  }, [form])
 
   return (
     <>

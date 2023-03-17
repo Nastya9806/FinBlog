@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { Box, Typography, Paper } from '@mui/material'
@@ -7,12 +7,19 @@ import { Box, Typography, Paper } from '@mui/material'
 import ArticleCard from '../components/article-card'
 import Spin from '../UI/spin/spin'
 import ErrorDetected from '../UI/error'
+import { fetchArticle } from '../services/kata'
 
 const SingleArticle = () => {
   const { slug } = useParams()
+  const { token } = useSelector((state) => state.user.user)
   const { loadingData } = useSelector((state) => state.articles)
   const { articles } = useSelector((state) => state.articles)
   const article = articles.find((item) => item.slug === slug)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchArticle(slug, token))
+  }, [dispatch, slug])
 
   const isLoading = (load) => {
     if (load === 'loading') {

@@ -112,19 +112,6 @@ const SignForm = ({ token }) => {
             >
               Login
             </Button>
-            {/* <Link to={res} style={{ textDecoration: 'none' }}>
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                sx={{
-                  mb: 2,
-                }}
-              >
-              Login
-              </Button>
-            </Link> */}
-
             <Typography variant="body2" justify="center" align="center">
               Don’t have an account? <Link to="/sign-up">Sign Up</Link>.
             </Typography>
